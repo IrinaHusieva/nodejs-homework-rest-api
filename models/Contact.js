@@ -1,8 +1,11 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
 import { handleSaveError, runValidatorsAtUpdate } from "./hooks.js";
+
 const nameRegexp = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/
+
 const phoneRegexp = /^\(\d{3}\) \d{3}-\d{4}$/;
+
 const contactSchema = new Schema({
     name: {
       type: String,
@@ -20,11 +23,19 @@ const contactSchema = new Schema({
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    }
 },
 {versionKey: false});
+  
 contactSchema.post("save", handleSaveError);
+
 contactSchema.pre("findOneAndUpdate", runValidatorsAtUpdate);
+
 contactSchema.post("findOneAndUpdate", handleSaveError);
+
 export const contactsAddSchema = Joi.object({
   name: Joi.string()
     .min(3)
@@ -49,14 +60,11 @@ export const contactsAddSchema = Joi.object({
     }),
   favorite: Joi.boolean()
 });
+
 export const contactUpdateFavoriteSchema = Joi.object({
      favorite: Joi.boolean().required().messages({ 'any.required': 'Missing field favorite' }),
 })
+
 const Contact = model('contact', contactSchema);
+
 export default Contact;
-
-
-
-
-
-
