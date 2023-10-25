@@ -14,7 +14,7 @@ const userUpdateFavorite = validateBody(updateSubscriptionSchema)
 
 const authRouter = express.Router();
 
-authRouter.post('/register', isEmptyBody, userSignupValidate, authController.register);
+authRouter.post('/register', upload.single("avatar"), isEmptyBody, userSignupValidate, authController.register);
 
 authRouter.post('/login', isEmptyBody, userSigninValidate, authController.login);
 
@@ -24,6 +24,6 @@ authRouter.post('/logout', authenticate, authController.logout);
 
 authRouter.patch('/', authenticate, userUpdateFavorite, authController.updateSubscription);
 
-authRouter.patch("/avatars", authenticate, upload.single("avatar"), authController.updateAvatarUser);
+authRouter.patch('/avatars', authenticate, upload.single('avatar'), authController.updateAvatarUser);
 
 export default authRouter;

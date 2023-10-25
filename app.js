@@ -10,7 +10,7 @@ import {
   handleNotFound,
   handleBadRequest,
   handleInternalServerError,
-} from './middlewares/errorHandler.js';
+} from './helpers/errorHandler.js';
 
 const app = express()
 
